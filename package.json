@@ -1,0 +1,30 @@
+{
+  "name": "react-three-renderer-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "keywords": [
+    "react-three-renderer",
+    "reactjs",
+    "threejs"
+  ],
+  "author": "Firtina -toxicFork- Ozbalikci",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.1.21",
+    "babel-eslint": "^4.1.5",
+    "babel-runtime": "^6.1.18",
+    "eslint": "^1.9.0",
+    "eslint-config-airbnb": "^1.0.0",
+    "eslint-plugin-react": "^3.8.0",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.0",
+    "mocha": "^2.3.4",
+    "mocha-loader": "^0.7.1",
+    "webpack": "^1.12.6",
+    "webpack-dev-server": "^1.12.1"
+  }
+}
