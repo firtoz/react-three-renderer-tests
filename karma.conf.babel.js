@@ -58,8 +58,15 @@ export default (config) => {
   };
 
   if (process.env.TRAVIS) {
+    configuration.customLaunchers = {
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox'],
+      },
+    };
+
     // http://swizec.com/blog/how-to-run-javascript-tests-in-chrome-on-travis/swizec/6647
-    configuration.browsers = ['Firefox'];
+    configuration.browsers = ['Chrome_travis_ci'];
   }
 
   config.set(configuration);
