@@ -10,7 +10,9 @@ if (isCoverage) {
 
 export default (config) => {
   const configuration = {
-    browsers: ['Chrome'],
+    browsers: [
+      'Chrome',
+    ],
 
     files: [
       'src/tests.js',
@@ -33,15 +35,22 @@ export default (config) => {
       dir: 'build/coverage/',
     },
 
-    webpack: webpackConfig,
+    webpack: {
+      ...webpackConfig,
+    },
 
-    webpackMiddleware: webpackConfig.devServer,
+    webpackMiddleware: {
+      ...webpackConfig.devServer,
+      quiet: true,
+      noInfo: true,
+    },
 
     plugins: [
       require('karma-webpack'),
       require('karma-mocha'),
       require('karma-spec-reporter'),
       require('karma-chrome-launcher'),
+      require('karma-firefox-launcher'),
     ].concat(isCoverage ? [
       require('istanbul-instrumenter-loader'),
       require('karma-coverage'),
@@ -49,15 +58,8 @@ export default (config) => {
   };
 
   if (process.env.TRAVIS) {
-    configuration.customLaunchers = {
-      Chrome_travis_ci: {
-        base: 'Chrome',
-        flags: ['--no-sandbox'],
-      },
-    };
-
     // http://swizec.com/blog/how-to-run-javascript-tests-in-chrome-on-travis/swizec/6647
-    configuration.browsers = ['Chrome_travis_ci'];
+    configuration.browsers = ['Firefox'];
   }
 
   config.set(configuration);
