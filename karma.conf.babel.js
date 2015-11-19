@@ -71,6 +71,8 @@ export default (config) => {
           '--no-first-run',
           '--noerrdialogs',
           '--disable-web-security',
+          '--enable-webgl',
+          '--ignore-gpu-blacklist',
         ],
       },
     };
