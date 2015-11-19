@@ -61,7 +61,7 @@ export default (config) => {
     configuration.customLaunchers = {
       Chrome_travis_ci: {
         base: 'Chrome',
-        flags: ['--no-sandbox'],
+        flags: ['--no-sandbox --use-gl=osmesa'],
       },
     };
 
