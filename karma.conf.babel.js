@@ -61,7 +61,17 @@ export default (config) => {
     configuration.customLaunchers = {
       Chrome_travis_ci: {
         base: 'Chrome',
-        flags: ['--no-sandbox --use-gl=osmesa --enable-logging=stderr --v=1'],
+        flags: [
+          '--use-gl=osmesa',
+          '--user-data-dir=~/tmp/x',
+          '--no-sandbox',
+          '--use-gl=osmesa',
+          '--enable-logging=stderr',
+          '--v=1',
+          '--no-first-run',
+          '--noerrdialogs',
+          '--disable-web-security',
+        ],
       },
     };
 
