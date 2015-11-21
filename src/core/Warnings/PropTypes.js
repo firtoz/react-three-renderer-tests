@@ -3,9 +3,6 @@ import THREE from 'three.js';
 import ReactDOM from 'react-dom';
 import React3 from '../../../../src/React3';
 import MockConsole from '../../utils/MockConsole';
-import chai from 'chai';
-
-const {expect} = chai;
 
 const testDiv = document.createElement('div');
 

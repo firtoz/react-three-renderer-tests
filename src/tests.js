@@ -9,9 +9,9 @@ sourceMapSupport.install({ // eslint-disable-line no-undef
 });
 
 describe('React3', () => {
-  require('./core/React3/React3Mounts.js');
+  require('./core/React3/React3Mounts');
 });
 
 describe('Warnings', () => {
-  require('./core/Warnings/Vectors.js');
+  require('./core/Warnings/PropTypes');
 });
