@@ -62,10 +62,8 @@ export default (config) => {
       Chrome_travis_ci: {
         base: 'Chrome',
         flags: [
-          //'--use-gl=osmesa',
           '--user-data-dir=~/tmp/x',
           '--no-sandbox',
-          //'--use-gl=osmesa',
           '--enable-logging=stderr',
           '--v=1',
           '--no-first-run',
@@ -79,6 +77,9 @@ export default (config) => {
 
     // http://swizec.com/blog/how-to-run-javascript-tests-in-chrome-on-travis/swizec/6647
     configuration.browsers = ['Chrome_travis_ci'];
+  } else {
+    configuration.plugins.unshift(require('karma-mocha-debug'));
+    configuration.frameworks.unshift('mocha-debug');
   }
 
   config.set(configuration);

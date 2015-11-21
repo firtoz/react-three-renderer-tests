@@ -11,3 +11,7 @@ sourceMapSupport.install({ // eslint-disable-line no-undef
 describe('React3', () => {
   require('./core/React3/React3Mounts.js');
 });
+
+describe('Warnings', () => {
+  require('./core/Warnings/Vectors.js');
+});

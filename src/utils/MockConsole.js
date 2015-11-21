@@ -70,9 +70,18 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
     const actualMessage = `${actualArgs.join('\t')}`;
 
     if (actualMessage !== expectedMessage) {
-      throw new Error(`Log error, expected:
+      const {
+        _messages,
+        _expectedMessages,
+        } = this;
+
+      // reset state to reduce additional errors
+      _messages.length = 0;
+      _expectedMessages.length = 0;
+
+      throw new Error(`Log error, expected message:
 > ${expectedMessage}
-Got:
+But received message:
 > ${actualMessage}`);
     }
   }
