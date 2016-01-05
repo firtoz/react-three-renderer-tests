@@ -19,7 +19,6 @@ before(() => {
   />, testDiv);
 });
 
-
 beforeEach(() => {
   mockConsole = new MockConsole();
 

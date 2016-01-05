@@ -23,7 +23,10 @@ export default (config) => {
 
     preprocessors: {
       // add webpack as preprocessor
-      'src/tests.js': ['webpack'],
+      'src/tests.js': [
+        'webpack',
+        'sourcemap',
+      ],
     },
 
     reporters: [
@@ -51,6 +54,7 @@ export default (config) => {
       require('karma-spec-reporter'),
       require('karma-chrome-launcher'),
       require('karma-firefox-launcher'),
+      require('karma-sourcemap-loader'),
     ].concat(isCoverage ? [
       require('istanbul-instrumenter-loader'),
       require('karma-coverage'),
@@ -78,8 +82,11 @@ export default (config) => {
     // http://swizec.com/blog/how-to-run-javascript-tests-in-chrome-on-travis/swizec/6647
     configuration.browsers = ['Chrome_travis_ci'];
   } else {
-    configuration.plugins.unshift(require('karma-mocha-debug'));
-    configuration.frameworks.unshift('mocha-debug');
+    configuration.client = {
+      mocha: {
+        reporter: 'html', // debug
+      },
+    };
   }
 
   config.set(configuration);

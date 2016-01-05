@@ -4,7 +4,7 @@ import React3 from '../../../../src/React3';
 import MockConsole from '../../utils/MockConsole';
 import chai from 'chai';
 
-const {expect} = chai;
+const { expect } = chai;
 
 const testDiv = document.createElement('div');
 
@@ -41,11 +41,15 @@ after(() => {
 it('Mounts with prop warnings', () => {
   ReactDOM.render(<React3/>, testDiv);
 
-  mockConsole.expect('Warning: Failed propType: Required prop `width` was not specified in `React3`.');
-  mockConsole.expect('Warning: Failed propType: Required prop `height` was not specified in `React3`.');
+  mockConsole.expect('Warning: Failed propType: ' +
+    'Required prop `width` was not specified in `React3`.');
+  mockConsole.expect('Warning: Failed propType: ' +
+    'Required prop `height` was not specified in `React3`.');
 
-  mockConsole.expect('Warning: Failed propType: Required prop `width` was not specified in `react3`.');
-  mockConsole.expect('Warning: Failed propType: Required prop `height` was not specified in `react3`.');
+  mockConsole.expect('Warning: Failed propType: ' +
+    'Required prop `width` was not specified in `react3`.');
+  mockConsole.expect('Warning: Failed propType: ' +
+    'Required prop `height` was not specified in `react3`.');
 
   mockConsole.expect('THREE.WebGLRenderer	73');
 

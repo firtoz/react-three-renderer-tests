@@ -1,7 +1,6 @@
 import assert from 'assert';
 
-export default
-class MockConsole {
+module.exports = class MockConsole {
   constructor() {
     this.prevConsole = window.console;
 
