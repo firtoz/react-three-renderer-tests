@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import React3 from '../../../../src/React3';
+import React3 from '../../../../src/lib/React3';
 import MockConsole from '../../utils/MockConsole';
 import chai from 'chai';
 

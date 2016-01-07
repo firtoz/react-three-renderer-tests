@@ -21,10 +21,6 @@ export default {
       exclude: /test|node_modules/,
       loader: path.join(__dirname, 'node_modules', 'istanbul-instrumenter-loader'),
     }] : [],
-    resolve: {
-      root: __dirname,
-      extensions: ['', '.js', '.jsx'],
-    },
   },
   devServer: {
     stats: {
