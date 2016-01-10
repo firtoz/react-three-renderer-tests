@@ -15,15 +15,19 @@ export default (config) => {
     ],
 
     files: [
-      'src/tests.js',
+      'src/tests-src.js',
+      'src/tests-lib.js',
       // each file acts as entry point for the webpack configuration
     ],
 
     frameworks: ['mocha'],
 
     preprocessors: {
-      // add webpack as preprocessor
-      'src/tests.js': [
+      'src/tests-src.js': [
+        'webpack',
+        'sourcemap',
+      ],
+      'src/tests-lib.js': [
         'webpack',
         'sourcemap',
       ],

@@ -22,49 +22,52 @@ module.exports = class MockConsole {
 
     if (_messages.length > 0) {
       assert(false, `Messages received but not expected:
-${_messages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n')}`);
+${_messages.map(({ args, stack }, i) => `${i}: ${this._printArgs(args, stack)}`).join('\n')}`);
     } else if (_expectedMessages.length > 0) {
       assert(false, `Messages expected but not received:
 ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n')}`);
     }
   }
 
-  _printArgs(args) {
-    return `[${args.type || `LOG`}]|${args.join('\t')}`;
+  _printArgs(args, stack) {
+    return `[${args.type || `LOG`}]|${args.join('\t')}${stack ? `\n${stack}\n` : ''}`;
   }
 
   log(...args) {
     args.type = 'LOG';
 
-    this._messageReceived(args);
+    this._messageReceived(args, new Error().stack);
   }
 
   warn(...args) {
     args.type = 'WARNING';
 
-    this._messageReceived(args);
+    this._messageReceived(args, new Error().stack);
   }
 
   error(...args) {
     args.type = 'ERROR';
 
-    this._messageReceived(args);
+    this._messageReceived(args, new Error().stack);
   }
 
-  _messageReceived(args) {
+  _messageReceived(args, stack) {
     const {
       _messages,
       _expectedMessages,
       } = this;
 
     if (_expectedMessages.length > 0) {
-      this._checkMessage(_expectedMessages.shift(), args);
+      this._checkMessage(_expectedMessages.shift(), { args, stack });
     } else {
-      _messages.push(args);
+      _messages.push({
+        args,
+        stack,
+      });
     }
   }
 
-  _checkMessage(expectedArgs, actualArgs) {
+  _checkMessage(expectedArgs, { args: actualArgs, stack }) {
     const expectedMessage = `${expectedArgs.join('\t')}`;
     const actualMessage = `${actualArgs.join('\t')}`;
 
@@ -81,7 +84,7 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
       throw new Error(`Log error, expected message:
 > ${expectedMessage}
 But received message:
-> ${actualMessage}`);
+> ${actualMessage}${stack ? `\n${stack}\n` : ''}`);
     }
   }
 

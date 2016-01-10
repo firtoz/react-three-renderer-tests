@@ -1,86 +1,102 @@
 import React from 'react';
 import THREE from 'three.js';
 import ReactDOM from 'react-dom';
-import React3 from '../../../../src/lib/React3';
 import MockConsole from '../../utils/MockConsole';
+import chai from 'chai';
 
-const testDiv = document.createElement('div');
+module.exports = type => {
+  const testDiv = document.createElement('div');
+  const { expect } = chai;
 
-let mockConsole;
+  let React3;
+  switch (type) {
+    case 'src':
+      React3 = require('../../../../src/lib/React3');
+      break;
+    case 'lib':
+      React3 = require('../../../../lib/React3');
+      break;
+    default:
+      expect(false, 'Invalid test type');
+      break;
+  }
 
-before(() => {
-  document.body.appendChild(testDiv);
+  let mockConsole;
 
-  // warmup
-  ReactDOM.render(<React3
-    key="warmup"
-    width={1}
-    height={1}
-  />, testDiv);
-});
+  before(() => {
+    document.body.appendChild(testDiv);
 
-beforeEach(() => {
-  mockConsole = new MockConsole();
+    // warmup
+    ReactDOM.render(<React3
+      key="warmup"
+      width={1}
+      height={1}
+    />, testDiv);
+  });
 
-  mockConsole.apply();
-});
+  beforeEach(() => {
+    mockConsole = new MockConsole();
 
-afterEach(() => {
-  ReactDOM.unmountComponentAtNode(testDiv);
+    mockConsole.apply();
+  });
 
-  mockConsole.revert();
-});
+  afterEach(() => {
+    ReactDOM.unmountComponentAtNode(testDiv);
 
-after(() => {
-  document.body.removeChild(testDiv);
-});
+    mockConsole.revert();
+  });
 
-it('Shows helpful warnings with correct class names', () => {
-  ReactDOM.render(<React3
-    width={800}
-    height={600}
-  >
-    <scene
-      position={new THREE.Vector2()}
-      rotation={new THREE.Vector3()}
-      quaternion={new THREE.Euler()}
+  after(() => {
+    document.body.removeChild(testDiv);
+  });
 
-      fog="0xffffff"
+  it('Shows helpful warnings with correct class names', () => {
+    ReactDOM.render(<React3
+      width={800}
+      height={600}
+    >
+      <scene
+        position={new THREE.Vector2()}
+        rotation={new THREE.Vector3()}
+        quaternion={new THREE.Euler()}
 
-      renderOrder="five"
-      name={9}
-    />
-  </React3>, testDiv);
+        fog="0xffffff"
 
-  mockConsole.expect('Warning: Failed propType: Invalid prop `name` of type `number`' +
-    ' supplied to `scene`, expected `string`.');
-  mockConsole.expect('Warning: Failed propType: Invalid prop `position` of type `THREE.Vector2`' +
-    ' supplied to `scene`, expected instance of `THREE.Vector3`.');
-  mockConsole.expect('Warning: Failed propType: Invalid prop `rotation` of type `THREE.Vector3`' +
-    ' supplied to `scene`, expected instance of `THREE.Euler`.');
-  mockConsole.expect('Warning: Failed propType: Invalid prop `quaternion` of type `THREE.Euler`' +
-    ' supplied to `scene`, expected instance of `THREE.Quaternion`.');
-  mockConsole.expect('Warning: Failed propType: Invalid prop `renderOrder` of type `string`' +
-    ' supplied to `scene`, expected `number`.');
-  mockConsole.expect('Warning: Failed propType: Invalid prop `fog` of type `String`' +
-    ' supplied to `scene`, expected instance of `THREE.Fog`.');
+        renderOrder="five"
+        name={9}
+      />
+    </React3>, testDiv);
 
-  // should whine but still should work!
-  mockConsole.expect('THREE.Euler: .setFromRotationMatrix() given unsupported order: undefined');
-  mockConsole.expect('THREE.WebGLRenderer	73');
-});
+    mockConsole.expect('Warning: Failed propType: Invalid prop `name` of type `number`' +
+      ' supplied to `scene`, expected `string`.');
+    mockConsole.expect('Warning: Failed propType: Invalid prop `position` of type `THREE.Vector2`' +
+      ' supplied to `scene`, expected instance of `THREE.Vector3`.');
+    mockConsole.expect('Warning: Failed propType: Invalid prop `rotation` of type `THREE.Vector3`' +
+      ' supplied to `scene`, expected instance of `THREE.Euler`.');
+    mockConsole.expect('Warning: Failed propType: Invalid prop `quaternion` of type `THREE.Euler`' +
+      ' supplied to `scene`, expected instance of `THREE.Quaternion`.');
+    mockConsole.expect('Warning: Failed propType: Invalid prop `renderOrder` of type `string`' +
+      ' supplied to `scene`, expected `number`.');
+    mockConsole.expect('Warning: Failed propType: Invalid prop `fog` of type `String`' +
+      ' supplied to `scene`, expected instance of `THREE.Fog`.');
 
-it('Does not show warnings when proper types are used', () => {
-  ReactDOM.render(<React3
-    width={800}
-    height={600}
-  >
-    <scene
-      position={new THREE.Vector3()}
-      rotation={new THREE.Euler()}
-      quaternion={new THREE.Quaternion()}
-    />
-  </React3>, testDiv);
+    // should whine but still should work!
+    mockConsole.expect('THREE.Euler: .setFromRotationMatrix() given unsupported order: undefined');
+    mockConsole.expect('THREE.WebGLRenderer	73');
+  });
 
-  mockConsole.expect('THREE.WebGLRenderer	73');
-});
+  it('Does not show warnings when proper types are used', () => {
+    ReactDOM.render(<React3
+      width={800}
+      height={600}
+    >
+      <scene
+        position={new THREE.Vector3()}
+        rotation={new THREE.Euler()}
+        quaternion={new THREE.Quaternion()}
+      />
+    </React3>, testDiv);
+
+    mockConsole.expect('THREE.WebGLRenderer	73');
+  });
+};
