@@ -41,8 +41,7 @@ module.exports = (type) => {
   afterEach(function _() {
     ReactDOM.unmountComponentAtNode(testDiv);
 
-    if (this.currentTest.state !== 'passed') {
-      debugger;
+    if (this.currentTest.state === 'failed') {
       // there were errors, no need to check more
       mockConsole.revert(true);
     } else {

@@ -1,4 +1,10 @@
 /* eslint-disable no-console */
+import 'source-map-support/browser-source-map-support';
+
+sourceMapSupport.install({ // eslint-disable-line no-undef
+  handleUncaughtExceptions: false,
+});
+
 
 import MockConsole from '../utils/MockConsole';
 import chai from 'chai';
