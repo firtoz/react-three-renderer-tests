@@ -19,11 +19,22 @@ module.exports = class MockConsole {
   }
 
   apply() {
+    this.prevConsole = window.console;
+
     window.console = this;
   }
 
-  revert() {
+  revert(ignoreChecks) {
     window.console = this.prevConsole;
+    this._verbose = false;
+    this._events.removeAllListeners();
+
+    if (ignoreChecks) {
+      this._messages = [];
+      this._expectedMessages = [];
+
+      return;
+    }
 
     const {
       _messages,
@@ -109,7 +120,7 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
       _messages.length = 0;
       _expectedMessages.length = 0;
 
-      throw new Error(`Log error, expected message:
+      assert(false, `Log error, expected message:
 > ${expectedMessage}
 But received message:
 > ${actualMessage}${stack ? `\n${stack}\n` : ''}`);

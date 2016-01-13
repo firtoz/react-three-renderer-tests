@@ -38,10 +38,16 @@ module.exports = (type) => {
     mockConsole.apply();
   });
 
-  afterEach(() => {
+  afterEach(function _() {
     ReactDOM.unmountComponentAtNode(testDiv);
 
-    mockConsole.revert();
+    if (this.currentTest.state !== 'passed') {
+      debugger;
+      // there were errors, no need to check more
+      mockConsole.revert(true);
+    } else {
+      mockConsole.revert();
+    }
   });
 
   after(() => {
