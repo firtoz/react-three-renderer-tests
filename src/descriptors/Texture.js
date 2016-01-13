@@ -1,6 +1,7 @@
 import React from 'react';
 import THREE from 'three.js';
 import ReactDOM from 'react-dom';
+import assert from 'assert';
 
 const WANTED_URL = 'https://avatars0.githubusercontent.com/u/860717?v=3&s=32';
 
@@ -31,11 +32,15 @@ module.exports = type => {
       };
 
       _onTextureLoad = () => {
-        this.props.done();
+        if (this.props.done) {
+          this.props.done();
+        }
       };
 
       _onTextureError = () => {
-        this.props.onError();
+        if (this.props.onError) {
+          this.props.onError();
+        }
       };
 
       render() {
@@ -55,7 +60,7 @@ module.exports = type => {
       }
     }
 
-    it('Should give an error when it cannot load', (done) => {
+    it('Should give an error for inexistent files', (done) => {
       const onError = () => {
         done();
       };
@@ -68,16 +73,21 @@ module.exports = type => {
       mockConsole.expect('THREE.WebGLRenderer	73');
     });
 
-    it('Should succeed when it can load', (done) => {
+    const textureLoadFail = () => {
+      assert.fail(false, false, 'Texture should have loaded');
+    };
+
+    it('Should succeed for existing files', (done) => {
       ReactDOM.render((<TestComponent
         url="/base/assets/images/rgbw.png"
         done={done}
+        onError={textureLoadFail}
       />), testDiv);
 
       mockConsole.expect('THREE.WebGLRenderer	73');
     });
 
-    it('Should succeed when it can load from cross origin', function _(done) {
+    it('Should succeed to load online files', function _(done) {
       this.timeout(5000);
 
       mockConsole.expect('THREE.WebGLRenderer	73');
@@ -85,10 +95,11 @@ module.exports = type => {
       ReactDOM.render((<TestComponent
         url={WANTED_URL}
         done={done}
+        onError={textureLoadFail}
       />), testDiv);
     });
 
-    it('Should fail for cross origin images if crossOrigin is not set', function _(done) {
+    it('Should fail for rendering cross origin images if crossOrigin is not set', function _(done) {
       this.timeout(5000);
 
       const onSceneCreate = (scene) => {
@@ -130,6 +141,7 @@ module.exports = type => {
             >
               <texture
                 url={WANTED_URL}
+                onError={textureLoadFail}
               />
             </meshBasicMaterial>
           </mesh>
@@ -146,7 +158,7 @@ module.exports = type => {
       });
     });
 
-    it('Should not fail for cross origin images if crossOrigin is set', function _(done) {
+    it('Should not fail for rendering cross origin images if crossOrigin is set', function _(done) {
       this.timeout(5000);
 
       mockConsole.expect('THREE.WebGLRenderer	73');
@@ -204,6 +216,7 @@ module.exports = type => {
                 url={WANTED_URL}
                 crossOrigin=""
                 onLoad={textureLoaded}
+                onError={textureLoadFail}
               />
             </meshBasicMaterial>
           </mesh>
