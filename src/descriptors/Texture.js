@@ -7,6 +7,21 @@ const WANTED_URL = 'https://avatars0.githubusercontent.com/u/860717?v=3&s=32';
 module.exports = type => {
   const { testDiv, React3, mockConsole } = require('../utils/initContainer')(type);
 
+  function ignoreExtensionWarnings(extensions) {
+    mockConsole.revert();
+
+    // need to do this to prevent logging during tests if the extensions don't exist
+    extensions.get('EXT_texture_filter_anisotropic');
+    extensions.get('OES_texture_float_linear');
+    extensions.get('OES_texture_half_float_linear');
+    extensions.get('WEBGL_compressed_texture_pvrtc');
+    extensions.get('OES_texture_half_float');
+    extensions.get('WEBGL_compressed_texture_s3tc');
+    extensions.get('EXT_blend_minmax');
+
+    mockConsole.apply();
+  }
+
   describe('TextureDescriptor', () => {
     class TestComponent extends React.Component {
       static propTypes = {
@@ -83,15 +98,7 @@ module.exports = type => {
 
         const extensions = scene.userData.markup._rootInstance._renderer.extensions;
 
-        mockConsole.revert();
-
-        // need to do this to prevent logging during tests if the extensions don't exist
-        extensions.get('WEBGL_compressed_texture_pvrtc');
-        extensions.get('OES_texture_half_float');
-        extensions.get('WEBGL_compressed_texture_s3tc');
-        extensions.get('EXT_blend_minmax');
-
-        mockConsole.apply();
+        ignoreExtensionWarnings(extensions);
       };
 
       mockConsole.expect('THREE.WebGLRenderer	73');
@@ -151,15 +158,7 @@ module.exports = type => {
 
         const extensions = scene.userData.markup._rootInstance._renderer.extensions;
 
-        mockConsole.revert();
-
-        // need to do this to prevent logging during tests if the extensions don't exist
-        extensions.get('WEBGL_compressed_texture_pvrtc');
-        extensions.get('OES_texture_half_float');
-        extensions.get('WEBGL_compressed_texture_s3tc');
-        extensions.get('EXT_blend_minmax');
-
-        mockConsole.apply();
+        ignoreExtensionWarnings(extensions);
 
         mockConsole.expect('texture has loaded');
         mockConsole.expect('fin');
