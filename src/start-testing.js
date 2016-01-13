@@ -16,4 +16,8 @@ module.exports = (type) => {
   describe(`${type}/Warnings`, () => {
     require('./core/Warnings/PropTypes')(type);
   });
+
+  describe(`${type}/Descriptors`, () => {
+    require('./descriptors/index')(type);
+  });
 };

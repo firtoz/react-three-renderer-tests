@@ -1,4 +1,6 @@
 import assert from 'assert';
+import util from 'util';
+import EventEmitter from 'events';
 
 module.exports = class MockConsole {
   constructor() {
@@ -6,6 +8,14 @@ module.exports = class MockConsole {
 
     this._messages = [];
     this._expectedMessages = [];
+
+    this._events = new EventEmitter();
+
+    this._verbose = false;
+  }
+
+  once(eventType, callback) {
+    this._events.on(eventType, callback);
   }
 
   apply() {
@@ -30,22 +40,36 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
   }
 
   _printArgs(args, stack) {
-    return `[${args.type || `LOG`}]|${args.join('\t')}${stack ? `\n${stack}\n` : ''}`;
+    return `[${args.type || `LOG`}]|${args.map(arg => {
+      return util.inspect(arg, {});
+    }).join('\t')}${stack ? `\n${stack}\n` : ''}`;
   }
 
   log(...args) {
+    if (this._verbose) {
+      this.prevConsole.log.apply(this.prevConsole, args);
+    }
+
     args.type = 'LOG';
 
     this._messageReceived(args, new Error().stack);
   }
 
   warn(...args) {
+    if (this._verbose) {
+      this.prevConsole.warn.apply(this.prevConsole, args);
+    }
+
     args.type = 'WARNING';
 
     this._messageReceived(args, new Error().stack);
   }
 
   error(...args) {
+    if (this._verbose) {
+      this.prevConsole.error.apply(this.prevConsole, args);
+    }
+
     args.type = 'ERROR';
 
     this._messageReceived(args, new Error().stack);
@@ -59,6 +83,10 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
 
     if (_expectedMessages.length > 0) {
       this._checkMessage(_expectedMessages.shift(), { args, stack });
+
+      if (_expectedMessages.length === 0) {
+        this._events.emit('empty');
+      }
     } else {
       _messages.push({
         args,

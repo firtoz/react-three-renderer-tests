@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node ./node_modules/karma/bin/karma start --single-run",
-    "tdd": "node ./node_modules/karma/bin/karma start",
+    "tdd": "bash -c \"(export KARMA_TDD=true; node ./node_modules/karma/bin/karma start)\"",
     "cover": "bash -c \"(export KARMA_COVERAGE=true; npm test)\""
   },
   "keywords": [

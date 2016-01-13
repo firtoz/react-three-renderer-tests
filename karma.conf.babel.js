@@ -8,6 +8,12 @@ if (isCoverage) {
   console.warn('Coverage enabled.'); // eslint-disable-line
 }
 
+const testFiles = ['src/tests-src.js'];
+
+if (!process.env.KARMA_TDD) {
+  testFiles.push('src/tests-lib.js');
+}
+
 export default (config) => {
   const configuration = {
     browsers: [
@@ -15,23 +21,28 @@ export default (config) => {
     ],
 
     files: [
-      'src/tests-src.js',
-      'src/tests-lib.js',
+      ...testFiles,
       // each file acts as entry point for the webpack configuration
+
+      {
+        pattern: 'assets/images/*.png',
+        watched: false,
+        included: false,
+        served: true,
+        nocache: false,
+      },
     ],
 
     frameworks: ['mocha'],
 
-    preprocessors: {
-      'src/tests-src.js': [
+    preprocessors: testFiles.reduce((map, file) => {
+      map[file] = [
         'webpack',
         'sourcemap',
-      ],
-      'src/tests-lib.js': [
-        'webpack',
-        'sourcemap',
-      ],
-    },
+      ];
+
+      return map;
+    }, {}),
 
     reporters: [
       'spec',
@@ -76,7 +87,6 @@ export default (config) => {
           '--v=1',
           '--no-first-run',
           '--noerrdialogs',
-          '--disable-web-security',
           '--enable-webgl',
           '--ignore-gpu-blacklist',
         ],
