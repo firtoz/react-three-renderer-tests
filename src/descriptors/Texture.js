@@ -1,13 +1,11 @@
 import React from 'react';
-import THREE from 'three.js';
+import THREE from 'three';
 import ReactDOM from 'react-dom';
 import assert from 'assert';
 
 const WANTED_URL = 'https://avatars0.githubusercontent.com/u/860717?v=3&s=32';
 
 module.exports = type => {
-
-
   describe('TextureDescriptor', () => {
     const { testDiv, React3, mockConsole } = require('../utils/initContainer')(type);
 

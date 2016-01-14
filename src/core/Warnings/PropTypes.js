@@ -1,5 +1,5 @@
 import React from 'react';
-import THREE from 'three.js';
+import THREE from 'three';
 import ReactDOM from 'react-dom';
 import MockConsole from '../../utils/MockConsole';
 import chai from 'chai';
