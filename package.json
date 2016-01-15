@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node ./node_modules/karma/bin/karma start --single-run",
+    "test": "eslint ./src/**/*.js && node ./node_modules/karma/bin/karma start --single-run",
     "tdd": "bash -c \"(export KARMA_TDD=true; node ./node_modules/karma/bin/karma start)\"",
     "cover": "bash -c \"(export KARMA_COVERAGE=true; npm test)\""
   },
