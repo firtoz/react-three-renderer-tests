@@ -14,16 +14,24 @@ module.exports = class MockConsole {
     this._verbose = false;
   }
 
-  once(eventType, callback) {
-    this._events.on(eventType, callback);
-  }
+  /* public methods */
 
+  /**
+   * Replaces window.console.
+   */
   apply() {
     this.prevConsole = window.console;
 
     window.console = this;
   }
 
+  /**
+   * Returns previously held hostage window.console.
+   *
+   * @param [ignoreChecks] {bool} If this is true, then it will ignore
+   *     expected but not received, or received but unexpected messages.
+   *     This is useful for not throwing additional errors from failed tests.
+   */
   revert(ignoreChecks) {
     window.console = this.prevConsole;
     this._verbose = false;
@@ -50,12 +58,28 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
     }
   }
 
-  _printArgs(args, stack) {
-    return `[${args.type || `LOG`}]|${args.map(arg => {
-      return util.inspect(arg, {});
-    }).join('\t')}${stack ? `\n${stack}\n` : ''}`;
+  once(eventType, callback) {
+    this._events.on(eventType, callback);
   }
 
+  expect(...args) {
+    const {
+      _messages,
+      _expectedMessages,
+      } = this;
+    if (_messages.length > 0) {
+      this._checkMessage(args, _messages.shift());
+    } else {
+      _expectedMessages.push(args);
+    }
+  }
+
+  /* overwritten methods */
+
+  /**
+   * Replaces console.log
+   * @param args {Array.<*>}
+   */
   log(...args) {
     if (this._verbose) {
       this.prevConsole.log.apply(this.prevConsole, args);
@@ -66,6 +90,10 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
     this._messageReceived(args, new Error().stack);
   }
 
+  /**
+   * Replaces console.warn
+   * @param args {Array.<*>}
+   */
   warn(...args) {
     if (this._verbose) {
       this.prevConsole.warn.apply(this.prevConsole, args);
@@ -76,6 +104,10 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
     this._messageReceived(args, new Error().stack);
   }
 
+  /**
+   * Replaces console.error
+   * @param args {Array.<*>}
+   */
   error(...args) {
     if (this._verbose) {
       this.prevConsole.error.apply(this.prevConsole, args);
@@ -86,6 +118,28 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
     this._messageReceived(args, new Error().stack);
   }
 
+  /* private methods */
+
+  /**
+   *
+   * @param args {Array.<*>}
+   * @param [stack]
+   * @returns {string}
+   * @private
+   */
+  _printArgs(args, stack) {
+    return `[${args.type || `LOG`}]|${args.map(arg => {
+      return util.inspect(arg, {});
+    }).join('\t')}${stack ? `\n${stack}\n` : ''}`;
+  }
+
+  /**
+   *
+   * @param args {Array.<*>}
+   * @param [stack]
+   * @returns {string}
+   * @private
+   */
   _messageReceived(args, stack) {
     const {
       _messages,
@@ -106,6 +160,13 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
     }
   }
 
+  /**
+   *
+   * @param expectedArgs {Array.<*>}
+   * @param actualArgs
+   * @param stack
+   * @private
+   */
   _checkMessage(expectedArgs, { args: actualArgs, stack }) {
     const expectedMessage = `${expectedArgs.join('\t')}`;
     const actualMessage = `${actualArgs.join('\t')}`;
@@ -124,18 +185,6 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
 > ${expectedMessage}
 But received message:
 > ${actualMessage}${stack ? `\n${stack}\n` : ''}`);
-    }
-  }
-
-  expect(...args) {
-    const {
-      _messages,
-      _expectedMessages,
-      } = this;
-    if (_messages.length > 0) {
-      this._checkMessage(args, _messages.shift());
-    } else {
-      _expectedMessages.push(args);
     }
   }
 };
