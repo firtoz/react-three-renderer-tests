@@ -2,9 +2,11 @@ import 'source-map-support/browser-source-map-support';
 import chai from 'chai';
 import dirtyChai from 'dirty-chai';
 
-sourceMapSupport.install({ // eslint-disable-line no-undef
-  handleUncaughtExceptions: false,
-});
+if (process.env.KARMA_TDD) {
+  sourceMapSupport.install({ // eslint-disable-line no-undef
+    handleUncaughtExceptions: false,
+  });
+}
 
 chai.use(dirtyChai);
 
