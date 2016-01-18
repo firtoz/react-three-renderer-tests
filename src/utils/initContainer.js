@@ -56,6 +56,9 @@ module.exports = (type) => {
   return {
     testDiv,
     React3,
+    /**
+     * @type {MockConsole}
+     */
     mockConsole,
   };
 };
