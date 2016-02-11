@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { expect } from 'chai';
+import chai from 'chai';
+const { expect } = chai;
 
 module.exports = type => {
   describe('DirectionalLightDescriptor', () => {
     const { testDiv, React3, mockConsole, requireHelper } = require('../utils/initContainer')(type);
 
-    const DirectionalLightDescriptor = requireHelper('descriptors/Light/DirectionalLightDescriptor');
+    const DirectionalLightDescriptor = requireHelper('descriptors/Light/' +
+      'DirectionalLightDescriptor');
     const LightDescriptorBase = requireHelper('descriptors/Light/LightDescriptorBase');
 
     class TestComponent extends React.Component {

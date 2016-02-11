@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {expect} from 'chai';
+import chai from 'chai';
+const { expect } = chai;
 
 module.exports = type => {
   describe('PointLightDescriptor', () => {

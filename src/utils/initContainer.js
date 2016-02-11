@@ -12,10 +12,8 @@ module.exports = (type) => {
     switch (type) {
       case 'src':
         return require(`../../../src/lib/${path}`);
-        break;
       case 'lib':
         return require(`../../../lib/${path}`);
-        break;
       default:
         expect(false, 'Invalid test type');
         break;
