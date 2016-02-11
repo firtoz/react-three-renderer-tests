@@ -20,6 +20,8 @@ module.exports = type => {
 
         expectedCameraFov: React.PropTypes.number,
         expectedCameraAspect: React.PropTypes.number,
+
+        expectedShadowBias: React.PropTypes.number,
       };
 
       static defaultProps = {
@@ -28,6 +30,8 @@ module.exports = type => {
 
         expectedCameraFov: PointLightDescriptor.defaultShadowCameraFov,
         expectedCameraAspect: PointLightDescriptor.defaultShadowCameraAspect,
+
+        expectedShadowBias: LightDescriptorBase.defaultShadowBias,
       };
 
       componentDidMount() {
@@ -41,7 +45,10 @@ module.exports = type => {
 
           expectedCameraFov,
           expectedCameraAspect,
+          expectedShadowBias,
         } = this.props;
+
+        expect(pointLight.shadow.bias).to.be.equal(expectedShadowBias);
 
         expect(pointLight.shadow.camera.near).to.be.equal(expectedCameraNear);
         expect(pointLight.shadow.camera.far).to.be.equal(expectedCameraFar);
@@ -89,12 +96,15 @@ module.exports = type => {
         expectedCameraAspect={400}
         expectedCameraNear={7}
         expectedCameraFar={8}
+        expectedShadowBias={1}
         lightProps={{
           shadowCameraFov: 300,
           shadowCameraAspect: 400,
 
           shadowCameraNear: 7,
           shadowCameraFar: 8,
+
+          shadowBias: 1,
         }}
       />), testDiv);
     });
