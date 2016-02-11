@@ -47,7 +47,7 @@ module.exports = class MockConsole {
     const {
       _messages,
       _expectedMessages,
-      } = this;
+    } = this;
 
     if (_messages.length > 0) {
       assert(false, `Messages received but not expected:
@@ -66,7 +66,7 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
     const {
       _messages,
       _expectedMessages,
-      } = this;
+    } = this;
     if (_messages.length > 0) {
       this._checkMessage(args, _messages.shift());
     } else {
@@ -128,9 +128,9 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
    * @private
    */
   _printArgs(args, stack) {
-    return `[${args.type || `LOG`}]|${args.map(arg => {
-      return util.inspect(arg, {});
-    }).join('\t')}${stack ? `\n${stack}\n` : ''}`;
+    return `[${args.type || `LOG`}]|${args.map(arg =>
+        util.inspect(arg, {}))
+      .join('\t')}${stack ? `\n${stack}\n` : ''}`;
   }
 
   /**
@@ -144,7 +144,7 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
     const {
       _messages,
       _expectedMessages,
-      } = this;
+    } = this;
 
     if (_expectedMessages.length > 0) {
       this._checkMessage(_expectedMessages.shift(), { args, stack });
@@ -175,7 +175,7 @@ ${_expectedMessages.map((args, i) => `${i}: ${this._printArgs(args)}`).join('\n'
       const {
         _messages,
         _expectedMessages,
-        } = this;
+      } = this;
 
       // reset state to reduce additional errors
       _messages.length = 0;

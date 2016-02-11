@@ -7,10 +7,10 @@ module.exports = type => {
   describe('ResourcesDescriptor', () => {
     const { testDiv, React3, mockConsole } = require('../utils/initContainer')(type);
 
-    it('should give warnings for items with resourceId properties outside resources', function _() {
+    it('should give warnings for items with resourceId properties outside resources', () => {
       mockConsole.expect('Warning: Found <meshBasicMaterial> with a resourceId property, ' +
         'but it was not placed within a <resources/> element.');
-      mockConsole.expect('THREE.WebGLRenderer	73');
+      mockConsole.expect('THREE.WebGLRenderer	74');
 
       ReactDOM.render((<React3
         width={800}
@@ -34,7 +34,7 @@ module.exports = type => {
     });
 
     it('should give warnings for items ' +
-      'without resourceId properties inside resources', function _() {
+      'without resourceId properties inside resources', () => {
       expect(() => {
         ReactDOM.render((<React3
           width={800}

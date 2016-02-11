@@ -19,6 +19,7 @@ module.exports = type => {
       extensions.get('WEBGL_compressed_texture_pvrtc');
       extensions.get('OES_texture_half_float');
       extensions.get('WEBGL_compressed_texture_s3tc');
+      extensions.get('WEBGL_compressed_texture_etc1');
       extensions.get('EXT_blend_minmax');
 
       mockConsole.apply();
@@ -65,7 +66,7 @@ module.exports = type => {
         done();
       };
 
-      mockConsole.expect('THREE.WebGLRenderer	73');
+      mockConsole.expect('THREE.WebGLRenderer	74');
 
       ReactDOM.render((<TestComponent
         url="./bad.png"
@@ -84,13 +85,13 @@ module.exports = type => {
         onError={textureLoadFail}
       />), testDiv);
 
-      mockConsole.expect('THREE.WebGLRenderer	73');
+      mockConsole.expect('THREE.WebGLRenderer	74');
     });
 
     it('Should succeed to load online files', function _(done) {
       this.timeout(5000);
 
-      mockConsole.expect('THREE.WebGLRenderer	73');
+      mockConsole.expect('THREE.WebGLRenderer	74');
 
       ReactDOM.render((<TestComponent
         url={WANTED_URL}
@@ -112,7 +113,7 @@ module.exports = type => {
         ignoreExtensionWarnings(extensions);
       };
 
-      mockConsole.expect('THREE.WebGLRenderer	73');
+      mockConsole.expect('THREE.WebGLRenderer	74');
 
       ReactDOM.render((<React3
         width={800}
@@ -161,7 +162,7 @@ module.exports = type => {
     it('Should not fail for rendering cross origin images if crossOrigin is set', function _(done) {
       this.timeout(5000);
 
-      mockConsole.expect('THREE.WebGLRenderer	73');
+      mockConsole.expect('THREE.WebGLRenderer	74');
 
       const onSceneCreate = (scene) => {
         if (!scene) {

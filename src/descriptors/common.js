@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 module.exports = type => {
-  describe('Common-Props', function _() {
+  describe('Common-Props', () => {
     const { testDiv, React3, mockConsole } = require('../utils/initContainer')(type);
 
     it('should set name property for entities', (done) => {
-      mockConsole.expect('THREE.WebGLRenderer', '73');
+      mockConsole.expect('THREE.WebGLRenderer', '74');
 
       // the entities should be constructed from leaves to ancestors, and then siblings
       // ( 1 -> 2 -> 3 -> 4 ) in reverse, ( 5 -> 6 ) in reverse
@@ -19,14 +19,12 @@ module.exports = type => {
 
       mockConsole.once('empty', done);
 
-      const nameRef = (hint) => {
-        return (entity) => {
-          if (!entity) {
-            return;
-          }
+      const nameRef = (hint) => (entity) => {
+        if (!entity) {
+          return;
+        }
 
-          console.log(`${hint}-${entity.name}`); // eslint-disable-line no-console
-        };
+        console.log(`${hint}-${entity.name}`); // eslint-disable-line no-console
       };
 
       ReactDOM.render((<React3

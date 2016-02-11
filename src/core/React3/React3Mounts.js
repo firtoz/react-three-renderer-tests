@@ -18,7 +18,7 @@ module.exports = type => {
     mockConsole.expect('Warning: Failed propType: ' +
       'Required prop `height` was not specified in `react3`.');
 
-    mockConsole.expect('THREE.WebGLRenderer	73');
+    mockConsole.expect('THREE.WebGLRenderer	74');
 
     ReactDOM.render(<React3/>, testDiv);
 
@@ -31,7 +31,7 @@ module.exports = type => {
       height={600}
     />, testDiv);
 
-    mockConsole.expect('THREE.WebGLRenderer	73');
+    mockConsole.expect('THREE.WebGLRenderer	74');
 
     expect(testDiv.firstChild).to.be.an.instanceOf(HTMLCanvasElement);
     const canvas = ReactDOM.findDOMNode(react3Instance);
