@@ -8,6 +8,20 @@ const { expect } = chai;
 module.exports = (type) => {
   const testDiv = document.createElement('div');
 
+  function requireHelper(path) {
+    switch (type) {
+      case 'src':
+        return require(`../../../src/lib/${path}`);
+        break;
+      case 'lib':
+        return require(`../../../lib/${path}`);
+        break;
+      default:
+        expect(false, 'Invalid test type');
+        break;
+    }
+  }
+
   let React3;
   switch (type) {
     case 'src':
@@ -60,5 +74,6 @@ module.exports = (type) => {
      * @type {MockConsole}
      */
     mockConsole,
+    requireHelper,
   };
 };
