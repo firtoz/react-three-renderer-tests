@@ -114,7 +114,8 @@ module.exports = type => {
     />, testDiv);
   });
 
-  it('Shows no warnings when both forceManualRender and onManualRenderTriggerCreated are added', () => {
+  it('Shows no warnings when both forceManualRender ' +
+    'and onManualRenderTriggerCreated are added', () => {
     ReactDOM.render(<React3
       width={800}
       height={600}
